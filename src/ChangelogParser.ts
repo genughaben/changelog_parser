@@ -19,6 +19,8 @@ import {
 } from "./ChangeLogTransitions";
 import {ChangeLog, ChangeLogBuilder, Feature, FeatureBuilder} from "./ChangeLog";
 
+
+// FSM-like parser for simple markdown changelog files to ChangeLog[] containing Feature[]
 export class ChangeLogParser {
     public changeLogs: ChangeLog[] = []
     public features: Feature[] = []

@@ -25,7 +25,10 @@ export class LineState implements LineStateInterface {
     return this.regex.test(line);
   }
   parse(line: string) {
-    return line.match(this.regex)[2];
+    if(this.is(line)) {
+      return line.match(this.regex)[2];
+    }
+    return null;
   }
 }
 
@@ -51,4 +54,9 @@ export const FeatureDescriptionState = new LineState(
   LineStateType.FEATURE_DESCRIPTION,
   /^((?!(#)).)*$/  // does not match
 );
-FeatureDescriptionState.parse = (line: string) => { return line }
+FeatureDescriptionState.parse = (line: string) => {
+  if(FeatureDescriptionState.is(line)) {
+    return line
+  }
+  return null;
+}
