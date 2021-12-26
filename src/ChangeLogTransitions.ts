@@ -97,9 +97,10 @@ export class NewChangeLogAction extends Action {
     const newChangeLog = parser.changeLogBuilder.build();
     parser.changeLogs.push(newChangeLog);
 
-    // reset builders
+    // reset builders and features array
     parser.changeLogBuilder = new ChangeLogBuilder();
     parser.featureBuilder = new FeatureBuilder();
+    parser.features = []
 
     // set changelog title
     parser.changeLogBuilder.title(this.outState.parse(parser.currentLine));

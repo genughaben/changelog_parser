@@ -72,6 +72,7 @@ export class ChangeLogParser {
         const lastFeature = this.featureBuilder.build()
         this.features.push(lastFeature)
         this.changeLogBuilder.features(this.features);
+        this.features = []
         const lastChangeLog = this.changeLogBuilder.build()
         this.changeLogs.push(lastChangeLog)
     }
