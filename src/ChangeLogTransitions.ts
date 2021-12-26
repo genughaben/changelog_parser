@@ -83,7 +83,6 @@ export class AddNextFeatureDescriptionAction extends Action {
   }
 }
 
-
 export class NewChangeLogAction extends Action {
   public inState: LineState = FeatureDescriptionState;
   public outState: LineState = ChangeLogTitleState;
@@ -103,7 +102,6 @@ export class NewChangeLogAction extends Action {
     parser.featureBuilder = new FeatureBuilder();
 
     // set changelog title
-    console.log()
     parser.changeLogBuilder.title(this.outState.parse(parser.currentLine));
   }
 }

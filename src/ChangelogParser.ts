@@ -29,15 +29,6 @@ export class ChangeLogParser {
     private parserState: LineState = NoneState;
     public currentLine: string
 
-
-    checkState() {
-        console.log(this.currentLine)
-        console.log(this.parserState)
-        console.log(this.changeLogs)
-        console.log(this.features)
-    }
-
-
     private possibleLineStates: LineState[] = [
         NoneState,
         ChangeLogTitleState,
@@ -61,6 +52,30 @@ export class ChangeLogParser {
         this.changeLogFileLines = changeLogFileReaer.readLines();
     }
 
+    parse() {
+        let nextState: LineState;
+
+        console.log("Parsing started");
+        this.changeLogFileLines.forEach((line: string) => {
+            this.currentLine = line;
+            nextState = this.detectState(line);
+            const maybeTransition = this.getTransition(nextState);
+            maybeTransition.action(this);
+            this.parserState = nextState;
+        });
+
+        console.log("Parsing finished. Adding final changelog now");
+        this.finalize()
+    }
+
+    private finalize() {
+        const lastFeature = this.featureBuilder.build()
+        this.features.push(lastFeature)
+        this.changeLogBuilder.features(this.features);
+        const lastChangeLog = this.changeLogBuilder.build()
+        this.changeLogs.push(lastChangeLog)
+    }
+
     private detectState(line: string): LineState {
         for (let state of this.possibleLineStates) {
             if (state.is(line)) {
@@ -70,68 +85,30 @@ export class ChangeLogParser {
         return NoneState
     }
 
-    parse() {
-        let nextState: LineState;
-
-        // for (let line of this.changeLogFileLines) {
-        //     nextState = this.detectState(line);
-        //     const transition = this.allowedTransitions.find(transition => transition.is(this.parserState, nextState));
-        //     if (transition) {
-        //         transition.do(this, line);
-        //     }
-        //     this.parserState = nextState;
-        // }
-
-        // maybe move actions to states and simplify transitions to simple List of generic Transition(from, to) instances
-        // currentTransition = this.getAction(nextState);
-        // currentTransition.handle(this);
-
-        console.log("Parsing started");
-        console.log(this.changeLogFileLines);
-        this.changeLogFileLines.forEach((line: string, idx:number) => {
-            this.currentLine = line;
-            nextState = this.detectState(line);
-            const maybeTransition = this.getTransition(nextState);
-
-            if(idx === 8) {
-                console.log("idx: " + idx)
-                console.log(LineStateType[maybeTransition.inState.type])
-                console.log(LineStateType[maybeTransition.outState.type])
-            }
-            maybeTransition.print()
-            maybeTransition.action(this);
-
-            // if (this.isActionAllowed(nextState)) {
-            //     this.currentAction(this)
-            // }
-            this.parserState = nextState;
-        });
-        console.log("Parsing finished. Adding final changelog now");
-        const lastFeature = this.featureBuilder.build()
-        this.features.push(lastFeature)
-        this.changeLogBuilder.features(this.features);
-        const lastChangeLog = this.changeLogBuilder.build()
-        this.changeLogs.push(lastChangeLog)
-    }
-
-    print() {
-        // console.log(this.changeLogFileLines);
-        // console.log(this.parserState);
-        console.log(this.changeLogs);
-        for(let changeLog of this.changeLogs) {
-            console.log(changeLog.date);
-            console.log(changeLog.title);
-            console.log(changeLog.features);
-        }
-    }
-
-    getTransition(nextState: LineState): Action {
+    private getTransition(nextState: LineState): Action {
         for (let transition of this.allowedTransitions) {
             if (transition.inState === this.parserState && transition.outState === nextState) {
                 return transition
             }
         }
         throw Error(`Transition for ${LineStateType[this.parserState.type]} -> ${LineStateType[nextState.type]} on line ${this.currentLine} not allowed - hence no action can be returned`);
+    }
+
+    checkState() {
+        console.log(this.currentLine)
+        console.log(this.parserState)
+        console.log(this.changeLogs)
+        console.log(this.features)
+    }
+
+    print() {
+        console.log(this.changeLogFileLines);
+        console.log(this.changeLogs);
+        for(let changeLog of this.changeLogs) {
+            console.log(changeLog.date);
+            console.log(changeLog.title);
+            console.log(changeLog.features);
+        }
     }
 }
 
