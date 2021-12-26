@@ -26,7 +26,7 @@ export class ChangeLogParser {
     public featureBuilder: FeatureBuilder = new FeatureBuilder()
 
     private changeLogFileLines: Array<string>;
-    private parserState: LineState
+    private parserState: LineState = NoneState;
     public currentLine: string
 
 
@@ -59,8 +59,6 @@ export class ChangeLogParser {
     constructor(changelog_path: string = "./assets/CHANGELOG.md") {
         const changeLogFileReaer = new ChangeLogFileReader(changelog_path);
         this.changeLogFileLines = changeLogFileReaer.readLines();
-        const firstLine = this.changeLogFileLines.pop();
-        this.parserState = this.detectState(firstLine);
     }
 
     private detectState(line: string): LineState {
@@ -90,17 +88,30 @@ export class ChangeLogParser {
 
         console.log("Parsing started");
         console.log(this.changeLogFileLines);
-        this.changeLogFileLines.forEach((line: string) => {
+        this.changeLogFileLines.forEach((line: string, idx:number) => {
             this.currentLine = line;
             nextState = this.detectState(line);
             const maybeTransition = this.getTransition(nextState);
-            console.log(LineStateType[maybeTransition.outState.type]);
+
+            if(idx === 8) {
+                console.log("idx: " + idx)
+                console.log(LineStateType[maybeTransition.inState.type])
+                console.log(LineStateType[maybeTransition.outState.type])
+            }
+            maybeTransition.print()
             maybeTransition.action(this);
+
             // if (this.isActionAllowed(nextState)) {
             //     this.currentAction(this)
             // }
             this.parserState = nextState;
         });
+        console.log("Parsing finished. Adding final changelog now");
+        const lastFeature = this.featureBuilder.build()
+        this.features.push(lastFeature)
+        this.changeLogBuilder.features(this.features);
+        const lastChangeLog = this.changeLogBuilder.build()
+        this.changeLogs.push(lastChangeLog)
     }
 
     print() {

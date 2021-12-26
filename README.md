@@ -11,7 +11,7 @@
 Run once on start and every time you change any non-typescript/non-javascript files.
 See package.json => scripts => build for more details.
 
-```angular2html
+```shell
 > npm run build
 ```
 

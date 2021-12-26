@@ -27,7 +27,6 @@ export class LineState implements LineStateInterface {
   parse(line: string) {
     return line.match(this.regex)[2];
   }
-
 }
 
 export const NoneState = new LineState(
