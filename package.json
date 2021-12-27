@@ -1,8 +1,9 @@
 {
-  "name": "markdown_parser",
+  "name": "changelog_parser",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "## Setup",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "clean": "rm -rf ./build && mkdir -p ./build/assets/",
     "copy:assets": "cp ./src/assets/* ./build/assets/",
@@ -11,13 +12,9 @@
     "test:watch": "jest --watch"
   },
   "keywords": [],
-  "author": "",
+  "author": "Frank Wolf",
   "license": "ISC",
   "dependencies": {
-    "@types/lodash": "^4.14.178",
-    "@types/markdown-it": "^12.2.3",
-    "lodash": "^4.17.21",
-    "markdown-it": "^12.3.0"
   },
   "devDependencies": {
     "@types/jest": "^27.0.3",
@@ -27,5 +24,16 @@
     "prettier": "^2.5.1",
     "ts-jest": "^27.1.2",
     "typescript": "^4.5.4"
-  }
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/genughaben/changelog_parser.git"
+  },
+  "bugs": {
+    "url": "https://github.com/genughaben/changelog_parser/issues"
+  },
+  "homepage": "https://github.com/genughaben/changelog_parser#readme"
 }
