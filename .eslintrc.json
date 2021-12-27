@@ -9,10 +9,7 @@
     "plugin:vue/recommended",
     "eslint:recommended",
     "prettier",
-    "prettier/vue",
-    "plugin:prettier/recommended",
-    "@vue/typescript/recommended",
-    "@vue/prettier/@typescript-eslint"
+    "plugin:prettier/recommended"
   ],
   "overrides": [
     {

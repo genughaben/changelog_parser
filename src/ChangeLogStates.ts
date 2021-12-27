@@ -3,39 +3,40 @@ export enum LineStateType {
   CHANGELOG_TITLE,
   CHANGELOG_DATE,
   FEATURE_TITLE,
-  FEATURE_DESCRIPTION
+  FEATURE_DESCRIPTION,
 }
 
 interface LineStateInterface {
-  type: LineStateType,
-  is: (line: string) => boolean
-  parse: (line: string) => string
+  type: LineStateType;
+  is: (line: string) => boolean;
+  parse: (line: string) => string;
 }
 
 export class LineState implements LineStateInterface {
-  type: LineStateType
-  regex: RegExp
+  type: LineStateType;
+  regex: RegExp;
 
   constructor(type: LineStateType, regex: RegExp) {
-    this.type = type
-    this.regex = regex
+    this.type = type;
+    this.regex = regex;
   }
 
   is(line: string): boolean {
     return this.regex.test(line);
   }
-  parse(line: string) {
-    if(this.is(line)) {
-      return line.match(this.regex)[2];
+
+  parse(line: string): string{
+    if (this.is(line)) {
+      const matches = line.match(this.regex)
+      if(matches && matches.length >= 3){
+        return matches[2];
+      }
     }
-    return null;
+    return "";
   }
 }
 
-export const NoneState = new LineState(
-  LineStateType.NONE,
-  /(?=a)b/
-);
+export const NoneState = new LineState(LineStateType.NONE, /(?=a)b/);
 
 export const ChangeLogTitleState = new LineState(
   LineStateType.CHANGELOG_TITLE,
@@ -52,11 +53,11 @@ export const FeatureTitleState = new LineState(
 );
 export const FeatureDescriptionState = new LineState(
   LineStateType.FEATURE_DESCRIPTION,
-  /^((?!(#)).)*$/  // does not match
+  /^((?!(#)).)*$/ // does not match
 );
 FeatureDescriptionState.parse = (line: string) => {
-  if(FeatureDescriptionState.is(line)) {
-    return line
+  if (FeatureDescriptionState.is(line)) {
+    return line;
   }
-  return null;
-}
+  return "";
+};

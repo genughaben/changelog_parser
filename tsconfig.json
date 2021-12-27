@@ -15,7 +15,7 @@
     "sourceMap": true,
     "strict": true,
     "target": "esnext",
-    "types": ["jest", "webpack-env"]
+    "outDir": "build"
   },
   "include": [
     "src/**/*.ts",

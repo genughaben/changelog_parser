@@ -1,6 +1,6 @@
 export interface FeatureInterface {
-  title: string
-  description: string[]
+  title: string;
+  description: string[];
 }
 
 export interface ChangeLogInterface {
@@ -10,12 +10,12 @@ export interface ChangeLogInterface {
 }
 
 export class Feature implements FeatureInterface {
-  title: string
-  description: string[]
+  title: string;
+  description: string[];
 
   constructor(title: string, description: string[]) {
-      this.title = title
-      this.description = description
+    this.title = title;
+    this.description = description;
   }
 
   static build(props: FeatureInterface) {
@@ -24,21 +24,20 @@ export class Feature implements FeatureInterface {
 }
 
 export class ChangeLog implements ChangeLogInterface {
-  title: string
-  date: Date
-  features: Feature[]
+  title: string;
+  date: Date;
+  features: Feature[];
 
   constructor(title: string, date: Date, features: Feature[]) {
-      this.title = title
-      this.date = date
-      this.features = features
+    this.title = title;
+    this.date = date;
+    this.features = features;
   }
 
   static build(props: ChangeLogInterface) {
     return new ChangeLog(props.title, props.date, props.features);
   }
 }
-
 
 export class FeatureBuilder {
   private readonly _feature: FeatureInterface;
@@ -65,7 +64,6 @@ export class FeatureBuilder {
   }
 }
 
-
 export class ChangeLogBuilder {
   private readonly _changeLog: ChangeLogInterface;
 
@@ -73,7 +71,7 @@ export class ChangeLogBuilder {
     this._changeLog = {
       title: "",
       date: new Date(),
-      features: []
+      features: [],
     };
   }
 
