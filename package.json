@@ -1,5 +1,5 @@
 {
-  "name": "changelog_parser",
+  "name": "markdown_changelog_parser",
   "version": "1.0.0",
   "description": "## Setup",
   "main": "build/index.js",
