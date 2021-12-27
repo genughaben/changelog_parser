@@ -1,17 +1,7 @@
-import * as fs from "fs";
-import { PathOrFileDescriptor } from "fs";
+export class FileContentSanitizer {
+  private fileLines: string[];
 
-export class ChangeLogFileReader {
-  public filePath: PathOrFileDescriptor;
-  private fileLines: string[] = [];
-
-  constructor(filePath: PathOrFileDescriptor = "./assets/CHANGELOG.md") {
-    this.filePath = filePath;
-  }
-
-  private readFile(): void {
-    const fileContent: string = fs.readFileSync(this.filePath, "utf8");
-    fs.close;
+  constructor(fileContent: string) {
     this.fileLines = fileContent.split("\n");
   }
 
@@ -34,7 +24,6 @@ export class ChangeLogFileReader {
   }
 
   public readLines(): Array<string> {
-    this.readFile();
     this.removeEmptyLines();
     this.removeChangelogsTitleLine();
     this.trim();

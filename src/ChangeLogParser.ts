@@ -1,4 +1,4 @@
-import { ChangeLogFileReader } from "./ChangeLogFileReader";
+import { FileContentSanitizer } from "./FileContentSanitizer";
 import {
   NoneState,
   ChangeLogDateState,
@@ -54,9 +54,9 @@ export class ChangeLogParser {
     new NewChangeLogAction(),
   ];
 
-  constructor(changelog_path: string = "./assets/CHANGELOG.md") {
-    const changeLogFileReaer = new ChangeLogFileReader(changelog_path);
-    this.changeLogFileLines = changeLogFileReaer.readLines();
+  constructor(changelog_filecontent: string) {
+    const fileContentSanitizer = new FileContentSanitizer(changelog_filecontent);
+    this.changeLogFileLines = fileContentSanitizer.readLines();
   }
 
   parse() {
@@ -124,8 +124,3 @@ export class ChangeLogParser {
     }
   }
 }
-
-const changeLogParser = new ChangeLogParser();
-changeLogParser.parse();
-changeLogParser.print();
-console.log("bye");
