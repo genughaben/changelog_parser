@@ -1,15 +1,26 @@
 {
   "compilerOptions": {
-    "module": "commonjs",
-    "target": "es5",
+    "allowSyntheticDefaultImports": true,
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "jsx": "preserve",
+    "lib": ["es5", "esnext", "dom", "dom.iterable", "scripthost"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noImplicitThis": false,
+    "paths": { "@/*": ["src/*"], "@tests/*": ["tests/*"] },
+    "skipLibCheck": true,
     "sourceMap": true,
-    "outDir": "build"
+    "strict": true,
+    "target": "esnext",
+    "types": ["jest", "webpack-env"]
   },
-  "exclude": [
-    "node_modules",
-  ],
   "include": [
-    "src/**/*",
-    "src/**/*.md"
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "tests/unit/**/*.ts",
+    "tests/unit/**/*.tsx"
   ]
 }
