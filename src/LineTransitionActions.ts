@@ -6,11 +6,11 @@ import {
   FeatureTitleState,
   NoneState,
   LineStateType,
-} from "./ChangeLogStates";
+} from "./LineStates";
 import { ChangeLogBuilder, FeatureBuilder } from "./ChangeLog";
-import { ChangeLogParser } from "./ChangelogParser";
+import { ChangeLogParser } from "./ChangeLogParser";
 
-export abstract class Action {
+export abstract class TransitionAction {
   public abstract inState: LineState;
   public abstract outState: LineState;
 
@@ -25,7 +25,7 @@ export abstract class Action {
   action(parser: ChangeLogParser): void {}
 }
 
-export class FirstChangeLogAction extends Action {
+export class FirstChangeLogAction extends TransitionAction {
   public inState: LineState = NoneState;
   public outState: LineState = ChangeLogTitleState;
 
@@ -34,7 +34,7 @@ export class FirstChangeLogAction extends Action {
   }
 }
 
-export class AddChangeLogDateAction extends Action {
+export class AddChangeLogDateAction extends TransitionAction {
   public inState: LineState = ChangeLogTitleState;
   public outState: LineState = ChangeLogDateState;
 
@@ -43,7 +43,7 @@ export class AddChangeLogDateAction extends Action {
   }
 }
 
-export class FirstFeatureForChangeLogAction extends Action {
+export class FirstFeatureForChangeLogAction extends TransitionAction {
   public inState: LineState = ChangeLogDateState;
   public outState: LineState = FeatureTitleState;
 
@@ -52,7 +52,7 @@ export class FirstFeatureForChangeLogAction extends Action {
   }
 }
 
-export class AddFeatureDescriptionAction extends Action {
+export class AddFeatureDescriptionAction extends TransitionAction {
   public inState: LineState = FeatureTitleState;
   public outState: LineState = FeatureDescriptionState;
 
@@ -61,7 +61,7 @@ export class AddFeatureDescriptionAction extends Action {
   }
 }
 
-export class AddMoreFeatureDescriptionAction extends Action {
+export class AddMoreFeatureDescriptionAction extends TransitionAction {
   public inState: LineState = FeatureDescriptionState;
   public outState: LineState = FeatureDescriptionState;
 
@@ -70,7 +70,7 @@ export class AddMoreFeatureDescriptionAction extends Action {
   }
 }
 
-export class AddNextFeatureDescriptionAction extends Action {
+export class AddNextFeatureDescriptionAction extends TransitionAction {
   public inState: LineState = FeatureDescriptionState;
   public outState: LineState = FeatureTitleState;
 
@@ -87,7 +87,7 @@ export class AddNextFeatureDescriptionAction extends Action {
   }
 }
 
-export class NewChangeLogAction extends Action {
+export class NewChangeLogAction extends TransitionAction {
   public inState: LineState = FeatureDescriptionState;
   public outState: LineState = ChangeLogTitleState;
 

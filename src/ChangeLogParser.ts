@@ -7,7 +7,7 @@ import {
   FeatureTitleState,
   LineState,
   LineStateType,
-} from "./ChangeLogStates";
+} from "./LineStates";
 import {
   AddChangeLogDateAction,
   AddFeatureDescriptionAction,
@@ -16,8 +16,8 @@ import {
   FirstChangeLogAction,
   FirstFeatureForChangeLogAction,
   NewChangeLogAction,
-  Action,
-} from "./ChangeLogTransitions";
+  TransitionAction,
+} from "./LineTransitionActions";
 import {
   ChangeLog,
   ChangeLogBuilder,
@@ -44,7 +44,7 @@ export class ChangeLogParser {
     FeatureDescriptionState,
   ];
 
-  private allowedTransitions: Action[] = [
+  private allowedTransitions: TransitionAction[] = [
     new FirstChangeLogAction(),
     new AddChangeLogDateAction(),
     new FirstFeatureForChangeLogAction(),
@@ -89,7 +89,7 @@ export class ChangeLogParser {
     return NoneState;
   }
 
-  private getTransition(nextState: LineState): Action {
+  private getTransition(nextState: LineState): TransitionAction {
     for (let transition of this.allowedTransitions) {
       if (
         transition.inState === this.parserState &&

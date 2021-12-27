@@ -1,26 +1,14 @@
 {
   "compilerOptions": {
-    "allowSyntheticDefaultImports": true,
-    "baseUrl": ".",
-    "esModuleInterop": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "jsx": "preserve",
-    "lib": ["es5", "esnext", "dom", "dom.iterable", "scripthost"],
-    "module": "esnext",
-    "moduleResolution": "node",
-    "noImplicitThis": false,
-    "paths": { "@/*": ["src/*"], "@tests/*": ["tests/*"] },
-    "skipLibCheck": true,
+    "module": "commonjs",
+    "target": "es5",
     "sourceMap": true,
-    "strict": true,
-    "target": "esnext",
     "outDir": "build"
   },
+  "exclude": [
+    "node_modules",
+  ],
   "include": [
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "tests/unit/**/*.ts",
-    "tests/unit/**/*.tsx"
+    "src/**/*.ts"
   ]
 }

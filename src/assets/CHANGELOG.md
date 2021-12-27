@@ -6,7 +6,9 @@
 
 #### Feature Title 1
 
-Text describing the feature 1
+Text describing the feature 1 Line 1
+Text describing the feature 1 Line 2
+Text describing the feature 1  Line 3
 
 #### Feature Title 2
 

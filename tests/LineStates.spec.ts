@@ -4,9 +4,9 @@ import {
   FeatureDescriptionState,
   FeatureTitleState,
   NoneState
-} from "../src/ChangeLogStates";
+} from "../src/LineStates";
 
-describe("ChangeLogStates is tests", () => {
+describe("LogStates is tests", () => {
   test('NoneState', () => {
     expect(NoneState.is("")).toBe(false)
     expect(NoneState.is("##")).toBe(false)
@@ -36,7 +36,7 @@ describe("ChangeLogStates is tests", () => {
   });
 });
 
-describe("ChangeLogStates parse tests", () => {
+describe("LogStates parse tests", () => {
   test('NoneState', () => {
     expect(NoneState.parse("")).toBe(null)
     expect(NoneState.parse("##")).toBe(null)
