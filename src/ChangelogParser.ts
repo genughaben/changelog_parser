@@ -56,8 +56,6 @@ export class ChangeLogParser {
 
     parse() {
         let nextState: LineState;
-
-        console.log("Parsing started");
         this.changeLogFileLines.forEach((line: string) => {
             this.currentLine = line;
             nextState = this.detectState(line);
@@ -65,8 +63,6 @@ export class ChangeLogParser {
             maybeTransition.action(this);
             this.parserState = nextState;
         });
-
-        console.log("Parsing finished. Adding final changelog now");
         this.finalize()
     }
 
