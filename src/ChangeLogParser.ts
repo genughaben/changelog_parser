@@ -61,13 +61,13 @@ export class ChangeLogParser {
 
   parse() {
     let nextState: LineState;
-    this.changeLogFileLines.forEach((line: string) => {
+    for (let line of this.changeLogFileLines) {
       this.currentLine = line;
       nextState = this.detectState(line);
       const maybeTransition = this.getTransition(nextState);
       maybeTransition.action(this);
       this.parserState = nextState;
-    });
+    }
     this.finalize();
   }
 
