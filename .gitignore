@@ -39,6 +39,11 @@ dist/**/*
 build/**/*
 src/**/*.js
 src/**/*.map
+test/**/*.map
+test/**/*.js
+/tests/**/*.spec.js
+/tests/**/*.spec.map
 
 # ignore yarn.lock
 yarn.lock
+
