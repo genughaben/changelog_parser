@@ -75,7 +75,7 @@ describe("FileContentSanitizer", () => {
     const testInput = [
       "# CHANGELOGS",
       '## Changelog Title - Version 2.00',
-      '### 2021-12-20'
+      '### 2021-12-20',
     ]
 
     const actualResult = FileContentSanitizer.removeChangelogsTitleLine(testInput);
