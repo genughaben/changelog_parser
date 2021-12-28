@@ -55,8 +55,7 @@ export class ChangeLogParser {
   ];
 
   constructor(changelog_filecontent: string) {
-    const fileContentSanitizer = new FileContentSanitizer(changelog_filecontent);
-    this.changeLogFileLines = fileContentSanitizer.readLines();
+    this.changeLogFileLines = FileContentSanitizer.cleanLines(changelog_filecontent);
   }
 
   parse() {

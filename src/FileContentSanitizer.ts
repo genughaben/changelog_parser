@@ -1,32 +1,32 @@
 export class FileContentSanitizer {
-  private fileLines: string[];
 
-  constructor(fileContent: string) {
-    this.fileLines = fileContent.split("\n");
+  public static splitLines(fileContent: string): string[] {
+    return fileContent.split("\n");
   }
 
-  private removeEmptyLines(): void {
-    this.fileLines = this.fileLines.filter((line) => line.trim().length > 0);
+  public static removeEmptyLines(fileLines: string[]): string[] {
+    return fileLines.filter((line) => line.trim().length > 0);
   }
 
-  private removeChangelogsTitleLine(): void {
-    const changeLogsTitleLine: string | undefined = this.fileLines.shift();
+  public static removeChangelogsTitleLine(fileLines: string[]): string[] {
+    const changeLogsTitleLine: string | undefined = fileLines.shift();
     if (
       changeLogsTitleLine === undefined ||
       !changeLogsTitleLine.match(/# CHANGELOGS/)
     ) {
       throw new Error("Missing Changelogs file title string");
     }
+    return fileLines;
   }
 
-  private trim(): void {
-    this.fileLines.map((line) => line.trim());
+  public static trim(fileLines: string[]): string[] {
+    return fileLines.map((line) => line.trim());
   }
 
-  public readLines(): Array<string> {
-    this.removeEmptyLines();
-    this.removeChangelogsTitleLine();
-    this.trim();
-    return this.fileLines;
+  public static cleanLines(fileContent: string): string[] {
+    const fileLines: string[] = FileContentSanitizer.splitLines(fileContent);
+    const noEmptySpacesLines = FileContentSanitizer.trim(fileLines);
+    const noEmptyLines = FileContentSanitizer.removeEmptyLines(noEmptySpacesLines);
+    return FileContentSanitizer.removeChangelogsTitleLine(noEmptyLines);
   }
 }
