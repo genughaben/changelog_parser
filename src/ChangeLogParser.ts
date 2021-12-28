@@ -32,8 +32,8 @@ export class ChangeLogParser {
   public changeLogBuilder: ChangeLogBuilder = new ChangeLogBuilder();
   public featureBuilder: FeatureBuilder = new FeatureBuilder();
 
-  private changeLogFileLines: Array<string>;
-  private parserState: LineState = NoneState;
+  private changeLogFileLines: Array<string> = [];
+  private _parserState: LineState = NoneState;
   public currentLine: string = "";
 
   private possibleLineStates: LineState[] = [
@@ -65,7 +65,7 @@ export class ChangeLogParser {
       nextState = this.detectState(line);
       const maybeTransition = this.getTransition(nextState);
       maybeTransition.action(this);
-      this.parserState = nextState;
+      this._parserState = nextState;
     }
     this.finalize();
   }
@@ -91,14 +91,14 @@ export class ChangeLogParser {
   private getTransition(nextState: LineState): TransitionAction {
     for (let transition of this.allowedTransitions) {
       if (
-        transition.inState === this.parserState &&
+        transition.inState === this._parserState &&
         transition.outState === nextState
       ) {
         return transition;
       }
     }
     throw Error(
-      `Transition for ${LineStateType[this.parserState.type]} -> ${
+      `Transition for ${LineStateType[this._parserState.type]} -> ${
         LineStateType[nextState.type]
       } on line ${
         this.currentLine
@@ -108,7 +108,7 @@ export class ChangeLogParser {
 
   checkState() {
     console.log(this.currentLine);
-    console.log(this.parserState);
+    console.log(this._parserState);
     console.log(this.changeLogs);
     console.log(this.features);
   }
