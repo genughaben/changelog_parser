@@ -1,6 +1,6 @@
 import {
   ChangeLogDateState,
-  ChangeLogTitleState,
+  ChangeLogTitleState, FeatureBulletDescriptionState,
   FeatureDescriptionState,
   FeatureTitleState,
   NoneState
@@ -64,6 +64,16 @@ describe("LogStates parse tests", () => {
     expect(FeatureDescriptionState.parse("#### Feature 1")).toBe("")
     expect(FeatureDescriptionState.parse("This is some text")).toBe("This is some text")
     expect(FeatureDescriptionState.parse("- this is a bullet point")).toBe("- this is a bullet point")
+  });
+
+  test('FeatureBulletDescriptionState', () => {
+    expect(FeatureBulletDescriptionState.parse("## Changelog 1.0")).toBe("")
+    expect(FeatureBulletDescriptionState.parse("### 2099-03-21")).toBe("")
+    expect(FeatureBulletDescriptionState.parse("#### Feature 1")).toBe("")
+    expect(FeatureBulletDescriptionState.parse("This is some text")).toBe("")
+    expect(FeatureBulletDescriptionState.parse("- this is a bullet point with dash")).toBe("this is a bullet point with dash")
+    expect(FeatureBulletDescriptionState.parse("* this is a bullet point with star")).toBe("this is a bullet point with star")
+    expect(FeatureBulletDescriptionState.parse("* this is a bullet point with no distance")).toBe("this is a bullet point with no distance")
   });
 });
 

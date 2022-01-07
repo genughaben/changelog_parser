@@ -4,6 +4,7 @@ export enum LineStateType {
   CHANGELOG_DATE,
   FEATURE_TITLE,
   FEATURE_DESCRIPTION,
+  FEATURE_BULLET_DESCRIPTION,
 }
 
 interface LineStateInterface {
@@ -28,8 +29,11 @@ export class LineState implements LineStateInterface {
   parse(line: string): string{
     if (this.is(line)) {
       const matches = line.match(this.regex)
-      if(matches && matches.length >= 3){
-        return matches[2];
+      if(matches && matches.length >= 4){
+        if(matches[2].length > 0) {
+          return matches[3];
+        }
+        throw new Error(`Missing empty space between line identifier and content: ${line}`);
       }
     }
     return "";
@@ -40,16 +44,16 @@ export const NoneState = new LineState(LineStateType.NONE, /(?=a)b/);
 
 export const ChangeLogTitleState = new LineState(
   LineStateType.CHANGELOG_TITLE,
-  /^(## )(.*)$/
+  /^(##)(\s+)(.*)$/
 );
 
 export const ChangeLogDateState = new LineState(
   LineStateType.CHANGELOG_DATE,
-  /^(### )(\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01]))$/
+  /^(###)(\s+)(\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01]))$/
 );
 export const FeatureTitleState = new LineState(
   LineStateType.FEATURE_TITLE,
-  /(#### )(.*)/
+  /(####)(\s+)(.*)/
 );
 export const FeatureDescriptionState = new LineState(
   LineStateType.FEATURE_DESCRIPTION,
@@ -61,3 +65,7 @@ FeatureDescriptionState.parse = (line: string) => {
   }
   return "";
 };
+export const FeatureBulletDescriptionState = new LineState(
+  LineStateType.FEATURE_BULLET_DESCRIPTION,
+  /^([*,-])(\s+)(.*)$/ // does not match
+);
