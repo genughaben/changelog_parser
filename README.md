@@ -6,17 +6,14 @@
 
 The class reads a Markdown file and extracts the changelog entries.
 The Markdown file is expected to be formatted as follows:
-- The first line of the file is the title of the changelog and has to be "# CHANGELOG".
-- New Changelogs entries begin with a title which out to have the format: "## [Title]"
-- Next comes the date which out to have the format: "### [Date]" and the Date has to be in the format: "YYYY-MM-DD"
-- Next multiple features can come. Each consists of at least:
-  - A title which out to have the format: "#### [Title]"
-  - A description line which out to have the format: "[Description]" - cannot start with #, - or *
-  - The first description can be followed by multiple lines which out to have the format: "[Description]"
-- The Next Changelog entry again begins with a title which out to have the format: "## [Title]"
+- Start: The first line of the file is the title of the changelog and has to be "# CHANGELOG".
+- Changelog: New Changelogs entries begin with a title which out to have the format: "## [Title]"
+- Changelog: Next comes the date which out to have the format: "### [Date]" and the Date has to be in the format: "YYYY-MM-DD"
+- Changelog: Now the description lines follow, which are either: 
+  - Text and come in format: "[Text]" 
+  - Bullet points and come in format: "* [Text]"
 
-NB: at minimum one empty space is necessary between each signifier (e.g. "-", "*", "#", "##", "###", "####" etc.) 
-and the content
+NB: at minimum one empty space is necessary between each signifier (e.g. "-", "*", "#", "##", "###", etc.) and the content.
 
 ### Example:
 
@@ -27,60 +24,50 @@ and the content
 
 ### 2021-12-20
 
-#### Feature Title 1
-
-Text describing the feature 1 Line 1
-Text describing the feature 1 Line 2
-Text describing the feature 1 Line 3
-
-#### Feature Title 2
-
-Text describing the feature 2
+Changelog description text line 1
+Changelog description text line 2
+- Feature bullet 1
+- Feature bullet 2
+  Changelog summary text line
 
 ## Changelog Title - Version 1.00
 
 ### 2021-10-10
 
-#### Feature Title 1
-
-Text describing the feature 1
-
-#### Feature Title 2
-
-Text describing the feature 2
-```
+Changelog description text line 1
+- Feature bullet 1
+- Feature bullet 2
+- Feature bullet 3
+  Changelog summary text line 1
+  Changelog summary text line 2
+``` 
 
 =>
 
 ```javascript
   const expectedChangeLogs: ChangeLog[] = [
-    new ChangeLog(
-      'Changelog Title - Version 2.00',
-      new Date('2021-12-20'),
-      [
-        new Feature('Feature Title 1',
-          ['Text describing the feature 1 Line 1',
-            'Text describing the feature 1 Line 2',
-            'Text describing the feature 1  Line 3']
-        ),
-        new Feature(
-          'Feature Title 2',
-          ['Text describing the feature 2']
-        )
-      ]),
-    new ChangeLog(
-      'Changelog Title - Version 1.00',
-      new Date('2021-10-10'),
-      [
-        new Feature(
-        'Feature Title 1',
-        [ 'Text describing the feature 1' ]
-        ),
-        new Feature(
-        'Feature Title 2',
-        [ 'Text describing the feature 2' ]),
-      ],
-    )];
+  new ChangeLog(
+          'Changelog Title - Version 2.00',
+          new Date('2021-12-20'),
+          [
+            new Line('Changelog description text line 1', LineStateType.DESCRIPTION_TEXT  ),
+            new Line('Changelog description text line 2', LineStateType.DESCRIPTION_TEXT  ),
+            new Line('Feature bullet 1', LineStateType.DESCRIPTION_BULLET  ),
+            new Line('Feature bullet 2', LineStateType.DESCRIPTION_BULLET  ),
+            new Line('Changelog summary text line', LineStateType.DESCRIPTION_TEXT)
+          ]),
+  new ChangeLog(
+          'Changelog Title - Version 1.00',
+          new Date('2021-10-10'),
+          [
+            new Line( 'Changelog description text line 1', LineStateType.DESCRIPTION_TEXT ),
+            new Line( 'Feature bullet 1', LineStateType.DESCRIPTION_BULLET),
+            new Line( 'Feature bullet 2', LineStateType.DESCRIPTION_BULLET),
+            new Line( 'Feature bullet 3', LineStateType.DESCRIPTION_BULLET),
+            new Line( 'Changelog summary text line 1', LineStateType.DESCRIPTION_TEXT),
+            new Line( 'Changelog summary text line 2', LineStateType.DESCRIPTION_TEXT)
+          ],
+  )];
 ```
 
 ## Use as library:

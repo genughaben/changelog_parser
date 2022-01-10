@@ -35,6 +35,7 @@ test('ChangeLogParser manual test', () => {
         new Line( 'Changelog summary text line 2', LineStateType.DESCRIPTION_TEXT)
       ],
     )];
+  console.log(changeLogParser.getChangeLogs())
 
   expect(changeLogParser.changeLogs.length).toBe(2);
 
