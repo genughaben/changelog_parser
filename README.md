@@ -11,9 +11,12 @@ The Markdown file is expected to be formatted as follows:
 - Next comes the date which out to have the format: "### [Date]" and the Date has to be in the format: "YYYY-MM-DD"
 - Next multiple features can come. Each consists of at least:
   - A title which out to have the format: "#### [Title]"
-  - A description line which out to have the format: "[Description]"
+  - A description line which out to have the format: "[Description]" - cannot start with #, - or *
   - The first description can be followed by multiple lines which out to have the format: "[Description]"
 - The Next Changelog entry again begins with a title which out to have the format: "## [Title]"
+
+NB: at minimum one empty space is necessary between each signifier (e.g. "-", "*", "#", "##", "###", "####" etc.) 
+and the content
 
 ### Example:
 
@@ -28,7 +31,7 @@ The Markdown file is expected to be formatted as follows:
 
 Text describing the feature 1 Line 1
 Text describing the feature 1 Line 2
-Text describing the feature 1  Line 3
+Text describing the feature 1 Line 3
 
 #### Feature Title 2
 

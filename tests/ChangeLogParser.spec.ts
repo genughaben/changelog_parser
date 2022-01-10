@@ -1,7 +1,8 @@
 import * as fs from "fs";
-import { PathOrFileDescriptor } from "fs";
+import {PathOrFileDescriptor} from "fs";
 import {ChangeLogParser} from "../src/ChangeLogParser";
-import {ChangeLog, Feature} from "../src/ChangeLog";
+import {ChangeLog, Line} from "../src/ChangeLog";
+import {LineStateType} from "../src/LineStateTypes";
 
 test('ChangeLogParser manual test', () => {
   const filePath: PathOrFileDescriptor = './tests/assets/CHANGELOG.md'
@@ -16,27 +17,22 @@ test('ChangeLogParser manual test', () => {
       'Changelog Title - Version 2.00',
       new Date('2021-12-20'),
       [
-        new Feature('Feature Title 1',
-          ['Text describing the feature 1 Line 1',
-            'Text describing the feature 1 Line 2',
-            'Text describing the feature 1  Line 3']
-        ),
-        new Feature(
-          'Feature Title 2',
-          ['Text describing the feature 2']
-        )
+        new Line('Changelog description text line 1', LineStateType.DESCRIPTION_TEXT  ),
+        new Line('Changelog description text line 2', LineStateType.DESCRIPTION_TEXT  ),
+        new Line('Feature bullet 1', LineStateType.DESCRIPTION_BULLET  ),
+        new Line('Feature bullet 2', LineStateType.DESCRIPTION_BULLET  ),
+        new Line('Changelog summary text line', LineStateType.DESCRIPTION_TEXT)
       ]),
     new ChangeLog(
       'Changelog Title - Version 1.00',
       new Date('2021-10-10'),
       [
-        new Feature(
-        'Feature Title 1',
-        [ 'Text describing the feature 1' ]
-        ),
-        new Feature(
-        'Feature Title 2',
-        [ 'Text describing the feature 2' ]),
+        new Line( 'Changelog description text line 1', LineStateType.DESCRIPTION_TEXT ),
+        new Line( 'Feature bullet 1', LineStateType.DESCRIPTION_BULLET),
+        new Line( 'Feature bullet 2', LineStateType.DESCRIPTION_BULLET),
+        new Line( 'Feature bullet 3', LineStateType.DESCRIPTION_BULLET),
+        new Line( 'Changelog summary text line 1', LineStateType.DESCRIPTION_TEXT),
+        new Line( 'Changelog summary text line 2', LineStateType.DESCRIPTION_TEXT)
       ],
     )];
 
@@ -45,10 +41,8 @@ test('ChangeLogParser manual test', () => {
   changeLogParser.changeLogs.forEach((changeLog: ChangeLog, idx: number) => {
     expect(changeLog.title).toBe(expectedChangeLogs[idx].title);
     expect(changeLog.date).toStrictEqual(expectedChangeLogs[idx].date);
-    changeLog.features.forEach((feature: Feature, idy: number) => {
-      expect(feature.title).toBe(expectedChangeLogs[idx].features[idy].title);
-      expect(feature.description).toStrictEqual(expectedChangeLogs[idx].features[idy].description);
-    })
-
+    changeLog.description.forEach((description: Line, idy: number) => {
+      expect(description.line).toBe(expectedChangeLogs[idx].description[idy].line);
+    });
   });
 });

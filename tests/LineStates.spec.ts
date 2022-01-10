@@ -1,8 +1,7 @@
 import {
   ChangeLogDateState,
-  ChangeLogTitleState, FeatureBulletDescriptionState,
-  FeatureDescriptionState,
-  FeatureTitleState,
+  ChangeLogTitleState, DescriptionBulletState,
+  DescriptionTextState,
   NoneState
 } from "../src/LineStates";
 
@@ -23,16 +22,11 @@ describe("LogStates is tests", () => {
     expect(ChangeLogDateState.is("### 1989-10-12")).toBe(true)
   });
 
-  test('FeatureTitleState', () => {
-    expect(FeatureTitleState.is("## Changelog 1.0")).toBe(false)
-    expect(FeatureTitleState.is("#### Feature 1")).toBe(true)
-  });
-
-  test('FeatureDescriptionState', () => {
-    expect(FeatureDescriptionState.is("## Changelog 1.0")).toBe(false)
-    expect(FeatureDescriptionState.is("### 2099-03-21")).toBe(false)
-    expect(FeatureDescriptionState.is("#### Feature 1")).toBe(false)
-    expect(FeatureDescriptionState.is("This is some text")).toBe(true)
+  test('DescriptionState', () => {
+    expect(DescriptionTextState.is("## Changelog 1.0")).toBe(false)
+    expect(DescriptionTextState.is("### 2099-03-21")).toBe(false)
+    expect(DescriptionTextState.is("#### Feature 1")).toBe(false)
+    expect(DescriptionTextState.is("This is some text")).toBe(true)
   });
 });
 
@@ -44,36 +38,43 @@ describe("LogStates parse tests", () => {
 
   test('ChangeLogTitleState', () => {
     expect(ChangeLogTitleState.parse("## Changelog 1.0")).toBe("Changelog 1.0")
+    expect(ChangeLogTitleState.parse("## Changelog #1.0")).toBe("Changelog #1.0")
+    expect(ChangeLogTitleState.parse("##Changelog 1.0")).toBe("")
     expect(ChangeLogTitleState.parse("###")).toBe("")
+    expect(ChangeLogTitleState.parse("- hello")).toBe("")
+    expect(ChangeLogTitleState.parse("* hello")).toBe("")
   });
 
   test('ChangeLogDateState', () => {
     expect(ChangeLogDateState.parse("## Changelog 1.0")).toBe("")
+    expect(ChangeLogDateState.parse("#### Feature Text")).toBe("")
     expect(ChangeLogDateState.parse("### 1989-10-12")).toBe("1989-10-12")
     expect(ChangeLogDateState.parse("### 2153-10-12")).toBe("2153-10-12")
+    expect(ChangeLogDateState.parse("- hello")).toBe("")
+    expect(ChangeLogDateState.parse("* hello")).toBe("")
   });
 
-  test('FeatureTitleState', () => {
-    expect(FeatureTitleState.parse("## Changelog 1.0")).toBe("")
-    expect(FeatureTitleState.parse("#### Feature 1")).toBe("Feature 1")
+  test('DescriptionTextState', () => {
+    expect(DescriptionTextState.parse("## Changelog 1.0")).toBe("")
+    expect(DescriptionTextState.parse("### 2099-03-21")).toBe("")
+    expect(DescriptionTextState.parse("#### Feature 1")).toBe("")
+    expect(DescriptionTextState.parse("This #1 feature is some text")).toBe("This #1 feature is some text")
+    expect(DescriptionTextState.parse("This is some text")).toBe("This is some text")
+    expect(DescriptionTextState.parse("This is some text")).toBe("This is some text")
+    expect(DescriptionTextState.parse("- this is a bullet point")).toBe("")
+    expect(DescriptionTextState.parse("* this is a bullet point")).toBe("")
   });
 
-  test('FeatureDescriptionState', () => {
-    expect(FeatureDescriptionState.parse("## Changelog 1.0")).toBe("")
-    expect(FeatureDescriptionState.parse("### 2099-03-21")).toBe("")
-    expect(FeatureDescriptionState.parse("#### Feature 1")).toBe("")
-    expect(FeatureDescriptionState.parse("This is some text")).toBe("This is some text")
-    expect(FeatureDescriptionState.parse("- this is a bullet point")).toBe("- this is a bullet point")
-  });
-
-  test('FeatureBulletDescriptionState', () => {
-    expect(FeatureBulletDescriptionState.parse("## Changelog 1.0")).toBe("")
-    expect(FeatureBulletDescriptionState.parse("### 2099-03-21")).toBe("")
-    expect(FeatureBulletDescriptionState.parse("#### Feature 1")).toBe("")
-    expect(FeatureBulletDescriptionState.parse("This is some text")).toBe("")
-    expect(FeatureBulletDescriptionState.parse("- this is a bullet point with dash")).toBe("this is a bullet point with dash")
-    expect(FeatureBulletDescriptionState.parse("* this is a bullet point with star")).toBe("this is a bullet point with star")
-    expect(FeatureBulletDescriptionState.parse("* this is a bullet point with no distance")).toBe("this is a bullet point with no distance")
+  test('DescriptionBulletState', () => {
+    expect(DescriptionBulletState.parse("## Changelog 1.0")).toBe("")
+    expect(DescriptionBulletState.parse("### 2099-03-21")).toBe("")
+    expect(DescriptionBulletState.parse("#### Feature 1")).toBe("")
+    expect(DescriptionBulletState.parse("- Fea# ture ## 1")).toBe("Fea# ture ## 1")
+    expect(DescriptionBulletState.parse("This is some text")).toBe("")
+    expect(DescriptionBulletState.parse("- this is a bullet point with dash")).toBe("this is a bullet point with dash")
+    expect(DescriptionBulletState.parse("* this is a bullet point with star")).toBe("this is a bullet point with star")
+    expect(DescriptionBulletState.parse("* this is a bullet point with no distance")).toBe("this is a bullet point with no distance")
+    expect(DescriptionBulletState.parse("*this is a bullet point with no distance")).toBe("")
   });
 });
 

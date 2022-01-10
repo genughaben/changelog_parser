@@ -1,0 +1,7 @@
+export enum LineStateType {
+  NONE,
+  CHANGELOG_TITLE,
+  CHANGELOG_DATE,
+  DESCRIPTION_TEXT,
+  DESCRIPTION_BULLET,
+}

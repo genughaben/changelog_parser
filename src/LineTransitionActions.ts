@@ -2,13 +2,12 @@ import {
   LineState,
   ChangeLogDateState,
   ChangeLogTitleState,
-  FeatureDescriptionState,
-  FeatureTitleState,
-  NoneState,
-  LineStateType,
+  DescriptionTextState,
+  NoneState, DescriptionBulletState,
 } from "./LineStates";
-import { ChangeLogBuilder, FeatureBuilder } from "./ChangeLog";
+import {ChangeLogBuilder, Line} from "./ChangeLog";
 import { ChangeLogParser } from "./ChangeLogParser";
+import {LineStateType} from "./LineStateTypes";
 
 export abstract class TransitionAction {
   public abstract inState: LineState;
@@ -43,68 +42,94 @@ export class AddChangeLogDateAction extends TransitionAction {
   }
 }
 
-export class FirstFeatureForChangeLogAction extends TransitionAction {
+export class AddTextAfterChangeLogDateAction extends TransitionAction {
   public inState: LineState = ChangeLogDateState;
-  public outState: LineState = FeatureTitleState;
+  public outState: LineState = DescriptionTextState;
 
   action(parser: ChangeLogParser) {
-    parser.featureBuilder.title(this.outState.parse(parser.currentLine));
+    const line = new Line(this.outState.parse(parser.currentLine), this.outState.type );
+    parser.changeLogBuilder.addDescription(line);
   }
 }
 
-export class AddFeatureDescriptionAction extends TransitionAction {
-  public inState: LineState = FeatureTitleState;
-  public outState: LineState = FeatureDescriptionState;
+export class AddBulletAfterChangeLogDateAction extends TransitionAction {
+  public inState: LineState = ChangeLogDateState;
+  public outState: LineState = DescriptionBulletState;
 
   action(parser: ChangeLogParser) {
-    parser.featureBuilder.description(this.outState.parse(parser.currentLine));
+    const line = new Line(this.outState.parse(parser.currentLine), this.outState.type );
+    parser.changeLogBuilder.addDescription(line);
   }
 }
 
-export class AddMoreFeatureDescriptionAction extends TransitionAction {
-  public inState: LineState = FeatureDescriptionState;
-  public outState: LineState = FeatureDescriptionState;
+export class AddTextAfterTextAction extends TransitionAction {
+  public inState: LineState = DescriptionTextState;
+  public outState: LineState = DescriptionTextState;
 
   action(parser: ChangeLogParser) {
-    parser.featureBuilder.description(this.outState.parse(parser.currentLine));
+    const line = new Line(this.outState.parse(parser.currentLine), this.outState.type );
+    parser.changeLogBuilder.addDescription(line);
   }
 }
 
-export class AddNextFeatureDescriptionAction extends TransitionAction {
-  public inState: LineState = FeatureDescriptionState;
-  public outState: LineState = FeatureTitleState;
+export class AddBulletAfterTextAction extends TransitionAction {
+  public inState: LineState = DescriptionTextState;
+  public outState: LineState = DescriptionBulletState;
 
   action(parser: ChangeLogParser) {
-    // finalize feature and push to features[]
-    const newFeature = parser.featureBuilder.build();
-    parser.features.push(newFeature);
-
-    // reset builder
-    parser.featureBuilder = new FeatureBuilder();
-
-    // add new features title
-    parser.featureBuilder.title(this.outState.parse(parser.currentLine));
+    const line = new Line(this.outState.parse(parser.currentLine), this.outState.type );
+    parser.changeLogBuilder.addDescription(line);
   }
 }
 
-export class NewChangeLogAction extends TransitionAction {
-  public inState: LineState = FeatureDescriptionState;
+export class AddTextAfterBulletAction extends TransitionAction {
+  public inState: LineState = DescriptionBulletState;
+  public outState: LineState = DescriptionTextState;
+
+  action(parser: ChangeLogParser) {
+    const line = new Line(this.outState.parse(parser.currentLine), this.outState.type );
+    parser.changeLogBuilder.addDescription(line);
+  }
+}
+
+export class AddBulletAfterBulletAction extends TransitionAction {
+  public inState: LineState = DescriptionBulletState;
+  public outState: LineState = DescriptionBulletState;
+
+  action(parser: ChangeLogParser) {
+    const line = new Line(this.outState.parse(parser.currentLine), this.outState.type );
+    parser.changeLogBuilder.addDescription(line);
+  }
+}
+
+export class NewChangeLogActionAfterText extends TransitionAction {
+  public inState: LineState = DescriptionTextState;
   public outState: LineState = ChangeLogTitleState;
 
   action(parser: ChangeLogParser) {
-    // finalize feature and push to features[]
-    const newFeature = parser.featureBuilder.build();
-    parser.features.push(newFeature);
-
     // add new feature to change log, build changelog and push to changeLogs[]
-    parser.changeLogBuilder.features(parser.features);
     const newChangeLog = parser.changeLogBuilder.build();
     parser.changeLogs.push(newChangeLog);
 
-    // reset builders and features array
+    // reset builders
     parser.changeLogBuilder = new ChangeLogBuilder();
-    parser.featureBuilder = new FeatureBuilder();
-    parser.features = [];
+
+    // set changelog title
+    parser.changeLogBuilder.title(this.outState.parse(parser.currentLine));
+  }
+}
+
+export class NewChangeLogActionAfterBullet extends TransitionAction {
+  public inState: LineState = DescriptionBulletState;
+  public outState: LineState = ChangeLogTitleState;
+
+  action(parser: ChangeLogParser) {
+    // add new feature to change log, build changelog and push to changeLogs[]
+    const newChangeLog = parser.changeLogBuilder.build();
+    parser.changeLogs.push(newChangeLog);
+
+    // reset builder
+    parser.changeLogBuilder = new ChangeLogBuilder();
 
     // set changelog title
     parser.changeLogBuilder.title(this.outState.parse(parser.currentLine));

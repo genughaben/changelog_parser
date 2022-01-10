@@ -3,34 +3,27 @@ import {
   NoneState,
   ChangeLogDateState,
   ChangeLogTitleState,
-  FeatureDescriptionState,
-  FeatureTitleState,
-  LineState,
-  LineStateType,
+  DescriptionTextState, LineState, DescriptionBulletState,
 } from "./LineStates";
 import {
+  AddBulletAfterBulletAction,
+  AddBulletAfterChangeLogDateAction, AddBulletAfterTextAction,
   AddChangeLogDateAction,
-  AddFeatureDescriptionAction,
-  AddMoreFeatureDescriptionAction,
-  AddNextFeatureDescriptionAction,
+  AddTextAfterBulletAction, AddTextAfterChangeLogDateAction, AddTextAfterTextAction,
   FirstChangeLogAction,
-  FirstFeatureForChangeLogAction,
-  NewChangeLogAction,
+  NewChangeLogActionAfterBullet, NewChangeLogActionAfterText,
   TransitionAction,
 } from "./LineTransitionActions";
 import {
   ChangeLog,
   ChangeLogBuilder,
-  Feature,
-  FeatureBuilder,
 } from "./ChangeLog";
+import {LineStateType} from "./LineStateTypes";
 
 // FSM-like parser for simple markdown changelog files to ChangeLog[] containing Feature[]
 export class ChangeLogParser {
   public changeLogs: ChangeLog[] = [];
-  public features: Feature[] = [];
   public changeLogBuilder: ChangeLogBuilder = new ChangeLogBuilder();
-  public featureBuilder: FeatureBuilder = new FeatureBuilder();
 
   private changeLogFileLines: Array<string> = [];
   private _parserState: LineState = NoneState;
@@ -40,18 +33,21 @@ export class ChangeLogParser {
     NoneState,
     ChangeLogTitleState,
     ChangeLogDateState,
-    FeatureTitleState,
-    FeatureDescriptionState,
+    DescriptionTextState,
+    DescriptionBulletState
   ];
 
   private allowedTransitions: TransitionAction[] = [
     new FirstChangeLogAction(),
     new AddChangeLogDateAction(),
-    new FirstFeatureForChangeLogAction(),
-    new AddFeatureDescriptionAction(),
-    new AddMoreFeatureDescriptionAction(),
-    new AddNextFeatureDescriptionAction(),
-    new NewChangeLogAction(),
+    new AddTextAfterChangeLogDateAction(),
+    new AddBulletAfterChangeLogDateAction(),
+    new AddTextAfterTextAction(),
+    new AddBulletAfterTextAction(),
+    new AddTextAfterBulletAction(),
+    new AddBulletAfterBulletAction(),
+    new NewChangeLogActionAfterText(),
+    new NewChangeLogActionAfterBullet(),
   ];
 
   constructor(changelog_filecontent: string) {
@@ -71,10 +67,6 @@ export class ChangeLogParser {
   }
 
   private finalize() {
-    const lastFeature = this.featureBuilder.build();
-    this.features.push(lastFeature);
-    this.changeLogBuilder.features(this.features);
-    this.features = [];
     const lastChangeLog = this.changeLogBuilder.build();
     this.changeLogs.push(lastChangeLog);
   }
@@ -106,20 +98,21 @@ export class ChangeLogParser {
     );
   }
 
+  getChangeLogs(): ChangeLog[] {
+    return this.changeLogs;
+  }
+
   checkState() {
     console.log(this.currentLine);
     console.log(this._parserState);
     console.log(this.changeLogs);
-    console.log(this.features);
   }
 
   print() {
     console.log(this.changeLogFileLines);
-    console.log(this.changeLogs);
-    for (let changeLog of this.changeLogs) {
-      console.log(changeLog.date);
-      console.log(changeLog.title);
-      console.log(changeLog.features);
-    }
+    this.changeLogs.forEach((changelog: ChangeLog) => {
+        console.log(changelog);
+      }
+    );
   }
 }

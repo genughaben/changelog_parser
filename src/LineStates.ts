@@ -1,11 +1,5 @@
-export enum LineStateType {
-  NONE,
-  CHANGELOG_TITLE,
-  CHANGELOG_DATE,
-  FEATURE_TITLE,
-  FEATURE_DESCRIPTION,
-  FEATURE_BULLET_DESCRIPTION,
-}
+import {LineStateType} from "./LineStateTypes";
+
 
 interface LineStateInterface {
   type: LineStateType;
@@ -51,21 +45,19 @@ export const ChangeLogDateState = new LineState(
   LineStateType.CHANGELOG_DATE,
   /^(###)(\s+)(\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01]))$/
 );
-export const FeatureTitleState = new LineState(
-  LineStateType.FEATURE_TITLE,
-  /(####)(\s+)(.*)/
+
+export const DescriptionTextState = new LineState(
+  LineStateType.DESCRIPTION_TEXT,
+  /^[^#|\-|*].*$/ // does not match
 );
-export const FeatureDescriptionState = new LineState(
-  LineStateType.FEATURE_DESCRIPTION,
-  /^((?!(#)).)*$/ // does not match
-);
-FeatureDescriptionState.parse = (line: string) => {
-  if (FeatureDescriptionState.is(line)) {
+DescriptionTextState.parse = (line: string) => {
+  if (DescriptionTextState.is(line)) {
     return line;
   }
   return "";
 };
-export const FeatureBulletDescriptionState = new LineState(
-  LineStateType.FEATURE_BULLET_DESCRIPTION,
+
+export const DescriptionBulletState = new LineState(
+  LineStateType.DESCRIPTION_BULLET,
   /^([*,-])(\s+)(.*)$/ // does not match
 );
