@@ -1,2 +1,2 @@
 export {ChangeLogParser} from './src/ChangeLogParser'
-export {ChangeLog, Feature} from './src/ChangeLog'
+export {ChangeLog, Line} from './src/ChangeLog'
