@@ -2,11 +2,8 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "lib": ["es2017", "es7", "es6", "dom"],
     "declaration": true,
-    "sourceMap": true,
     "outDir": "build",
-    "strict": true,
     "esModuleInterop": true
   },
   "exclude": [
