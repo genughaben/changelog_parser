@@ -50,8 +50,7 @@ Changelog description text line 1
           'Changelog Title - Version 2.00',
           new Date('2021-12-20'),
           [
-            new Line('Changelog description text line 1', LineStateType.DESCRIPTION_TEXT  ),
-            new Line('Changelog description text line 2', LineStateType.DESCRIPTION_TEXT  ),
+            new Line('Changelog description text line 1 Changelog description text line 2', LineStateType.DESCRIPTION_TEXT  ),
             new Line('Feature bullet 1', LineStateType.DESCRIPTION_BULLET  ),
             new Line('Feature bullet 2', LineStateType.DESCRIPTION_BULLET  ),
             new Line('Changelog summary text line', LineStateType.DESCRIPTION_TEXT)
@@ -64,8 +63,7 @@ Changelog description text line 1
             new Line( 'Feature bullet 1', LineStateType.DESCRIPTION_BULLET),
             new Line( 'Feature bullet 2', LineStateType.DESCRIPTION_BULLET),
             new Line( 'Feature bullet 3', LineStateType.DESCRIPTION_BULLET),
-            new Line( 'Changelog summary text line 1', LineStateType.DESCRIPTION_TEXT),
-            new Line( 'Changelog summary text line 2', LineStateType.DESCRIPTION_TEXT)
+            new Line( 'Changelog summary text line 1 Changelog summary text line 2', LineStateType.DESCRIPTION_TEXT),
           ],
   )];
 ```

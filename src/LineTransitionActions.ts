@@ -67,8 +67,8 @@ export class AddTextAfterTextAction extends TransitionAction {
   public outState: LineState = DescriptionTextState;
 
   action(parser: ChangeLogParser) {
-    const line = new Line(this.outState.parse(parser.currentLine), this.outState.type );
-    parser.changeLogBuilder.addDescription(line);
+    const textToAppend = this.outState.parse(parser.currentLine);
+    parser.changeLogBuilder.appendTextToLastLine(textToAppend);
   }
 }
 

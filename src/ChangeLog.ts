@@ -75,6 +75,15 @@ export class ChangeLogBuilder {
     return this;
   }
 
+  appendTextToLastLine(text: string): ChangeLogBuilder {
+    const lastLine = this._changeLog.description[this._changeLog.description.length - 1];
+    lastLine.line += " " + text;
+    return this;
+  }
+  getLastDescriptionLine(): Line {
+    return this._changeLog.description.at(-1);
+  }
+
   build(): ChangeLog {
     return ChangeLog.build(this._changeLog);
   }

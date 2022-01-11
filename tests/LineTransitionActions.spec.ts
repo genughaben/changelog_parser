@@ -176,13 +176,14 @@ describe("LineTransitionActions actions", () => {
   test("AddTextAfterTextAction", () => {
     exampleParser["_parserState"] = DescriptionTextState;
     exampleParser.currentLine = 'text'
+    const _changeLog = exampleParser.changeLogBuilder["_changeLog"];
+    _changeLog.description = [new Line("previous text", LineStateType.DESCRIPTION_TEXT)];
 
     const transition = new AddTextAfterTextAction();
     transition.action(exampleParser);
-    const _changeLog = exampleParser.changeLogBuilder["_changeLog"];
 
     const actualResult = _changeLog.description.at(-1)
-    const expectedResult = new Line("text", LineStateType.DESCRIPTION_TEXT);
+    const expectedResult = new Line("previous text text", LineStateType.DESCRIPTION_TEXT);
 
     expect(actualResult).toStrictEqual(expectedResult);
   })
