@@ -1,8 +1,9 @@
 {
   "name": "markdown_changelog_parser",
-  "version": "1.0.14",
+  "version": "1.0.15",
   "description": "## Setup",
-  "types": "./index.ts",
+  "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "clean": "rm -rf ./build && mkdir -p ./build/assets/",
     "copy:assets": "cp ./src/assets/* ./build/assets/",
