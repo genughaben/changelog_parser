@@ -1,9 +1,12 @@
 {
   "name": "markdown_changelog_parser",
-  "version": "1.0.15",
+  "version": "1.0.19",
   "description": "## Setup",
-  "main": "build/index.js",
+  "main": "build/index",
   "types": "build/index.d.ts",
+  "files": [
+    "build"
+  ],
   "scripts": {
     "clean": "rm -rf ./build && mkdir -p ./build/assets/",
     "copy:assets": "cp ./src/assets/* ./build/assets/",
@@ -11,7 +14,11 @@
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },
-  "keywords": ["markdown", "changelog", "parser"],
+  "keywords": [
+    "markdown",
+    "changelog",
+    "parser"
+  ],
   "author": "Frank Wolf",
   "license": "ISC",
   "dependencies": {
