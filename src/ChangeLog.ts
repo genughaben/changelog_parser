@@ -80,10 +80,6 @@ export class ChangeLogBuilder {
     lastLine.line += " " + text;
     return this;
   }
-  getLastDescriptionLine(): Line {
-    return this._changeLog.description.at(-1);
-  }
-
   build(): ChangeLog {
     return ChangeLog.build(this._changeLog);
   }
