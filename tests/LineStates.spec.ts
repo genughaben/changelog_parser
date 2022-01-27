@@ -1,6 +1,6 @@
 import {
   ChangeLogDateState,
-  ChangeLogTitleState, DescriptionBulletState,
+  ChangeLogTitleState, ChangeLogVersionState, DescriptionBulletState,
   DescriptionTextState,
   NoneState
 } from "../src/LineStates";
@@ -20,6 +20,14 @@ describe("LogStates is tests", () => {
     expect(ChangeLogDateState.is("## Changelog 1.0")).toBe(false)
     expect(ChangeLogDateState.is("### 1989-10-12")).toBe(true)
     expect(ChangeLogDateState.is("### 1989-10-12")).toBe(true)
+  });
+
+  test('ChangeLogVersion', () => {
+    expect(ChangeLogVersionState.is("## Changelog 1.0")).toBe(false)
+    expect(ChangeLogVersionState.is("### 1989-10-12")).toBe(false)
+    expect(ChangeLogVersionState.is("### v2022.1.0")).toBe(true)
+    expect(ChangeLogVersionState.is("### v2022.111.0")).toBe(true)
+    expect(ChangeLogVersionState.is("### v3023.23.123123")).toBe(true)
   });
 
   test('DescriptionState', () => {

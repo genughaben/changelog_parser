@@ -46,6 +46,11 @@ export const ChangeLogDateState = new LineState(
   /^(###)(\s+)(\d{4}[\/\-](0?[1-9]|1[012])[\/\-](0?[1-9]|[12][0-9]|3[01]))$/
 );
 
+export const ChangeLogVersionState = new LineState(
+  LineStateType.CHANGELOG_VERSION,
+  /^(###)(\s+)(v\d{4}\.\d+\.\d+)$/
+);
+
 export const DescriptionTextState = new LineState(
   LineStateType.DESCRIPTION_TEXT,
   /^[^#|\-|*].*$/ // does not match

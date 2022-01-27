@@ -3,15 +3,22 @@ import {
   NoneState,
   ChangeLogDateState,
   ChangeLogTitleState,
-  DescriptionTextState, LineState, DescriptionBulletState,
+  DescriptionTextState, LineState, DescriptionBulletState, ChangeLogVersionState,
 } from "./LineStates";
 import {
   AddBulletAfterBulletAction,
-  AddBulletAfterChangeLogDateAction, AddBulletAfterTextAction,
+  AddBulletAfterChangeLogDateAction,
+  AddBulletAfterTextAction,
   AddChangeLogDateAction,
-  AddTextAfterBulletAction, AddTextAfterChangeLogDateAction, AddTextAfterTextAction,
+  AddChangeLogDateAfterVersionAction,
+  AddChangeLogVersionAction, AddChangelogVersionAfterDateAction,
+  AddDescriptionBulletAfterVersionAction, AddDescriptionTextAfterVersionAction,
+  AddTextAfterBulletAction,
+  AddTextAfterChangeLogDateAction,
+  AddTextAfterTextAction,
   FirstChangeLogAction,
-  NewChangeLogActionAfterBullet, NewChangeLogActionAfterText,
+  NewChangeLogActionAfterBullet,
+  NewChangeLogActionAfterText,
   TransitionAction,
 } from "./LineTransitionActions";
 import {
@@ -33,6 +40,7 @@ export class ChangeLogParser {
     NoneState,
     ChangeLogTitleState,
     ChangeLogDateState,
+    ChangeLogVersionState,
     DescriptionTextState,
     DescriptionBulletState
   ];
@@ -40,6 +48,11 @@ export class ChangeLogParser {
   private allowedTransitions: TransitionAction[] = [
     new FirstChangeLogAction(),
     new AddChangeLogDateAction(),
+    new AddChangeLogVersionAction(),
+    new AddChangeLogDateAfterVersionAction(),
+    new AddChangelogVersionAfterDateAction(),
+    new AddDescriptionTextAfterVersionAction(),
+    new AddDescriptionBulletAfterVersionAction(),
     new AddTextAfterChangeLogDateAction(),
     new AddBulletAfterChangeLogDateAction(),
     new AddTextAfterTextAction(),

@@ -24,23 +24,26 @@ export class Line implements LineInterface {
 
 export interface ChangeLogInterface {
   title: string;
-  date: Date;
+  version: string | null;
+  date: Date | null;
   description: Line[];
 }
 
 export class ChangeLog implements ChangeLogInterface {
   title: string;
+  version: string;
   date: Date;
   description: Line[];
 
-  constructor(title: string, date: Date, description: Line[]) {
+  constructor(title: string, version: string = null, date: Date = null, description: Line[]) {
     this.title = title;
+    this.version = version;
     this.date = date;
     this.description = description;
   }
 
   static build(props: ChangeLogInterface) {
-    return new ChangeLog(props.title, props.date, props.description);
+    return new ChangeLog(props.title, props.version, props.date, props.description);
   }
 }
 
@@ -50,9 +53,15 @@ export class ChangeLogBuilder {
   constructor() {
     this._changeLog = {
       title: "",
-      date: new Date(),
+      version : null,
+      date: null,
       description: [],
     };
+  }
+
+  version(version: string): ChangeLogBuilder {
+    this._changeLog.version = version;
+    return this;
   }
 
   title(title: string): ChangeLogBuilder {

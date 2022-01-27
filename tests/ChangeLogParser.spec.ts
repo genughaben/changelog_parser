@@ -1,11 +1,11 @@
 import * as fs from "fs";
 import {PathOrFileDescriptor} from "fs";
-import {ChangeLogParser} from "../src/ChangeLogParser";
-import {ChangeLog, Line} from "../src/ChangeLog";
-import {LineStateType} from "../src/LineStateTypes";
+import {ChangeLogParser} from "../src";
+import {ChangeLog, Line} from "../src";
+import {LineStateType} from "../src";
 
 test('ChangeLogParser manual test', () => {
-  const filePath: PathOrFileDescriptor = './tests/assets/CHANGELOG.md'
+  const filePath: PathOrFileDescriptor = './src/assets/CHANGELOG.md'
   const fileContent: string = fs.readFileSync(filePath, "utf8");
 
   const changeLogParser = new ChangeLogParser(fileContent);
@@ -15,7 +15,8 @@ test('ChangeLogParser manual test', () => {
   const expectedChangeLogs: ChangeLog[] = [
     new ChangeLog(
       'Changelog Title - Version 2.00',
-      new Date('2021-12-20'),
+      "v3023.23.123123",
+      null,
       [
         new Line('Changelog description text line 1 Changelog description text line 2', LineStateType.DESCRIPTION_TEXT  ),
         new Line('Feature bullet 1', LineStateType.DESCRIPTION_BULLET  ),
@@ -24,6 +25,7 @@ test('ChangeLogParser manual test', () => {
       ]),
     new ChangeLog(
       'Changelog Title - Version 1.00',
+      null,
       new Date('2021-10-10'),
       [
         new Line( 'Changelog description text line 1', LineStateType.DESCRIPTION_TEXT ),

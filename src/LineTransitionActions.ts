@@ -3,7 +3,7 @@ import {
   ChangeLogDateState,
   ChangeLogTitleState,
   DescriptionTextState,
-  NoneState, DescriptionBulletState,
+  NoneState, DescriptionBulletState, ChangeLogVersionState,
 } from "./LineStates";
 import {ChangeLogBuilder, Line} from "./ChangeLog";
 import { ChangeLogParser } from "./ChangeLogParser";
@@ -39,6 +39,53 @@ export class AddChangeLogDateAction extends TransitionAction {
 
   action(parser: ChangeLogParser) {
     parser.changeLogBuilder.date(this.outState.parse(parser.currentLine));
+  }
+}
+
+export class AddChangeLogVersionAction extends TransitionAction {
+  public inState: LineState = ChangeLogTitleState;
+  public outState: LineState = ChangeLogVersionState;
+
+  action(parser: ChangeLogParser) {
+    parser.changeLogBuilder.version(this.outState.parse(parser.currentLine));
+  }
+}
+
+export class AddChangeLogDateAfterVersionAction extends TransitionAction {
+  public inState: LineState = ChangeLogVersionState;
+  public outState: LineState = ChangeLogDateState;
+
+  action(parser: ChangeLogParser) {
+    parser.changeLogBuilder.date(this.outState.parse(parser.currentLine));
+  }
+}
+
+export class AddChangelogVersionAfterDateAction extends TransitionAction {
+  public inState: LineState = ChangeLogDateState;
+  public outState: LineState = ChangeLogVersionState;
+
+  action(parser: ChangeLogParser) {
+    parser.changeLogBuilder.date(this.outState.parse(parser.currentLine));
+  }
+}
+
+export class AddDescriptionTextAfterVersionAction extends TransitionAction {
+  public inState: LineState = ChangeLogVersionState;
+  public outState: LineState = DescriptionTextState
+
+  action(parser: ChangeLogParser) {
+    const line = new Line(this.outState.parse(parser.currentLine), this.outState.type );
+    parser.changeLogBuilder.addDescription(line);
+  }
+}
+
+export class AddDescriptionBulletAfterVersionAction extends TransitionAction {
+  public inState: LineState = ChangeLogVersionState;
+  public outState: LineState = DescriptionBulletState
+
+  action(parser: ChangeLogParser) {
+    const line = new Line(this.outState.parse(parser.currentLine), this.outState.type );
+    parser.changeLogBuilder.addDescription(line);
   }
 }
 
