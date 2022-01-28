@@ -1,6 +1,6 @@
 {
   "name": "markdown_changelog_parser",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "## Setup",
   "main": "build/index",
   "types": "build/index.d.ts",
