@@ -31,11 +31,11 @@ export interface ChangeLogInterface {
 
 export class ChangeLog implements ChangeLogInterface {
   title: string;
-  version: string;
-  date: Date;
+  version: string | null;
+  date: Date | null;
   description: Line[];
 
-  constructor(title: string, version: string = null, date: Date = null, description: Line[]) {
+  constructor(title: string, version: string | null = null, date: Date | null = null, description: Line[]) {
     this.title = title;
     this.version = version;
     this.date = date;

@@ -85,7 +85,7 @@ describe("FileContentSanitizer", () => {
   test("cleanLines", () => {
     const expectedResult = [
       "## Changelog Title - Version 2.00",
-      "### 2021-12-20",
+      '### v3023.23.123123',
       "Changelog description text line 1",
       "Changelog description text line 2",
       "- Feature bullet 1",
@@ -101,7 +101,7 @@ describe("FileContentSanitizer", () => {
       "Changelog summary text line 2",
     ]
 
-    const testFilePath: PathOrFileDescriptor = './tests/assets/CHANGELOG.md'
+    const testFilePath: PathOrFileDescriptor = './tests/assets/CHANGELOG_example.md'
     const testFileContent: string = fs.readFileSync(testFilePath, "utf8");
 
     const acutalResult = FileContentSanitizer.cleanLines(testFileContent);

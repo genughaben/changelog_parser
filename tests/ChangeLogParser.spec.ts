@@ -4,8 +4,9 @@ import {ChangeLogParser} from "../src";
 import {ChangeLog, Line} from "../src";
 import {LineStateType} from "../src";
 
+describe("ChangeLogParser", () =>{
 test('ChangeLogParser manual test', () => {
-  const filePath: PathOrFileDescriptor = './src/assets/CHANGELOG.md'
+  const filePath: PathOrFileDescriptor = './src/assets/CHANGELOG_example.md'
   const fileContent: string = fs.readFileSync(filePath, "utf8");
 
   const changeLogParser = new ChangeLogParser(fileContent);
@@ -46,4 +47,15 @@ test('ChangeLogParser manual test', () => {
       expect(description.line).toBe(expectedChangeLogs[idx].description[idy].line);
     });
   });
+});
+
+  // test('ChangeLogParser manual test - no date', () => {
+  // const filePath: PathOrFileDescriptor = './src/assets/CHANGELOG.md'
+  // const fileContent: string = fs.readFileSync(filePath, "utf8");
+  //
+  // const changeLogParser = new ChangeLogParser(fileContent);
+  // changeLogParser.parse();
+  // changeLogParser.print();
+  //
+  // });
 });
