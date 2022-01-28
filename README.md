@@ -7,7 +7,8 @@
 The class reads a Markdown file and extracts the changelog entries.
 The Markdown file is expected to be formatted as follows:
 - Start: The first line of the file is the title of the changelog and has to be "# CHANGELOG".
-- Changelog: New Changelogs entries begin with a title which out to have the format: "## [Title]"
+- Changelog: New Changelogs entries begin with a title which ought to have the format: "## [Title]"
+- Changelog: Next comes either the version or null which ought to have the format: "### vYYYY.X.Y" where X and Y can be arbitrarily many digits
 - Changelog: Next comes the date which out to have the format: "### [Date]" and the Date has to be in the format: "YYYY-MM-DD"
 - Changelog: Now the description lines follow, which are either: 
   - Text and come in format: "[Text]" 
@@ -22,13 +23,14 @@ NB: at minimum one empty space is necessary between each signifier (e.g. "-", "*
 
 ## Changelog Title - Version 2.00
 
-### 2021-12-20
+### v3023.23.123123
 
 Changelog description text line 1
 Changelog description text line 2
 - Feature bullet 1
 - Feature bullet 2
-  Changelog summary text line
+
+Changelog summary text line
 
 ## Changelog Title - Version 1.00
 
@@ -40,6 +42,7 @@ Changelog description text line 1
 - Feature bullet 3
   Changelog summary text line 1
   Changelog summary text line 2
+
 ``` 
 
 =>
@@ -48,7 +51,8 @@ Changelog description text line 1
   const expectedChangeLogs: ChangeLog[] = [
   new ChangeLog(
           'Changelog Title - Version 2.00',
-          new Date('2021-12-20'),
+          "v3023.23.123123",
+          null,
           [
             new Line('Changelog description text line 1 Changelog description text line 2', LineStateType.DESCRIPTION_TEXT  ),
             new Line('Feature bullet 1', LineStateType.DESCRIPTION_BULLET  ),
@@ -57,6 +61,7 @@ Changelog description text line 1
           ]),
   new ChangeLog(
           'Changelog Title - Version 1.00',
+          null,
           new Date('2021-10-10'),
           [
             new Line( 'Changelog description text line 1', LineStateType.DESCRIPTION_TEXT ),
@@ -72,7 +77,7 @@ Changelog description text line 1
 
 Put:
 
-Add "markdown_changelog_parser": "^1.0.4" (or a more current version) to your package.json dependencies section.
+Add "markdown_changelog_parser": "^1.0.22" (or a more current version) to your package.json dependencies section.
 
 ### Code example:
 
